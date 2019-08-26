@@ -33,42 +33,32 @@ leds, and also indicates if the button on the board is pushed down.
 
 ## API
 
-Functionality
+API methods available from this server
 
-- Get status 
-
-        ``` 
+- GET status 
+ 
         curl http://localhost:5000/status 
-        ```
         
-- Reset
+- PUT reset
 
-        ````
-        curl http://localhost:5000/reset -X PUT
-        ````        
+        curl http://localhost:5000/reset -X PUT        
         
-- Get or set status LED1   
+- GET or PUT status LED1   
 
-        ```
         curl http://localhost:5000/led1
         curl http://localhost:5000/led1 -X PUT -H 'Content-Type: application/json'  --data '"ON"'
         curl http://localhost:5000/led1 -X PUT -H 'Content-Type: application/json'  --data '"OFF"'
         curl http://localhost:5000/led1 -X PUT -H 'Content-Type: application/json'  --data '"SWITCH"'
-        ``` 
         
-- Get or set status LED2   
+- GET or PUT status LED2   
 
-        ```
         curl http://localhost:5000/led2
         curl http://localhost:5000/led2 -X PUT -H 'Content-Type: application/json'  --data '"ON"'
         curl http://localhost:5000/led2 -X PUT -H 'Content-Type: application/json'  --data '"OFF"'
-        curl http://localhost:5000/led2 -X PUT -H 'Content-Type: application/json'  --data '"SWITCH"'
-        ```            
+        curl http://localhost:5000/led2 -X PUT -H 'Content-Type: application/json'  --data '"SWITCH"'            
 
-- Get status button   
+- GET status BUTTON 
 
-        ```
         curl http://localhost:5000/button
-        ```
         
         
