@@ -22,7 +22,7 @@ Start the [server](server/server.py)
 python server/server.py
 ```
 
-The server tries to detect automatically the COM-port used by the Arduino board, and set up a connection.
+The server tries to detect automatically the COM-port used by the Arduino board and starts a connection.
 
 Then two processes are started:
 
@@ -34,12 +34,11 @@ illustrate use of the API.
 
 ## Test API
 
-Go to the [demonstrator](http://localhost:5000/)
+See [demonstrator](http://localhost:5000/)
 
 ![Image](../master/images/browser.png?raw=true)
 
-Use buttons LED1 and LED2 to control the leds. The browser displays the status of the
-leds, and also indicates if the button on the board is pushed down.
+The buttons LED1 and LED2 can be used to control the leds. The browser displays the status of the leds, and also indicates if the button on the board is pushed down.
 
 ## Methods API
 
@@ -70,5 +69,7 @@ API methods available from this server
 - GET status BUTTON 
 
         curl 'http://localhost:5000/button' -X GET
+        
+These methods can also be tested from the [demonstrator](http://localhost:5000/).        
         
         
