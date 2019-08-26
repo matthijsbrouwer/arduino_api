@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="static/bootstrap-4.3.1/css/bootstrap.min.css">
+
+    <title>Demonstrator control Arduino using API</title>
+  </head>
+  <body>
+    
+    <!-- 20190820 : API arduino (demonstrator for Johan Bucher) -->
+    
+    <div class="container">
+    
+	    <h1>Control Arduino using API</h1>
+	    
+	    <hr class="bg-secondary my-3">
+	    
+	    <p>Demonstrate use of API to get and set status of Arduino board</p>
+	    
+	    <div id="arduino-demo" class="row">
+        <div class="col">
+			    <div class="card border border-secondary">
+			      <h5 class="card-header border-bottom border-secondary">Demonstrator</h5>
+			      <div class="card-body">
+			        <h5 class="card-title">Status</h5>
+			        <div>
+			          <label id="demo_arduino" class="btn btn-light border border-secondary"><img src="static/icons/arduino.png"></img>&nbsp;ARDUINO</label>
+			          <label id="demo_button" class="btn btn-light border border-secondary"><img src="static/icons/button.png"></img>BUTTON <span class="status"></span></label>
+		          </div>
+			        <div>
+			          <label id="demo_led1" class="btn btn-light border border-secondary"><img src="static/icons/led.png"></img>LED1 <span class="status"></span></label>
+				        <label id="demo_led2" class="btn btn-light border border-secondary"><img src="static/icons/led.png"></img>LED2 <span class="status"></span></label>
+			        </div>
+			      </div>
+			      <div class="card-body">
+			        <h5 class="card-title">Controls</h5>
+			        <button data-url="{{ url_for('led1',_external=True) }}" data-method="put" data-data="SWITCH" type="button" class="btn btn-primary">LED1</button>
+			        <button data-url="{{ url_for('led2',_external=True) }}" data-method="put" data-data="SWITCH" type="button" class="btn btn-primary">LED2</button>
+			        <button data-url="{{ url_for('reset',_external=True) }}" data-method="put" type="button" class="btn btn-dark">RESET</button>
+						</div>			  	
+				  </div>				  				     
+		    </div>
+		    <div class="col-md-auto d-none d-lg-block">
+		      <div class="card border border-secondary">
+            <h5 class="card-header border-bottom border-secondary">Arduino</h5>
+            <div class="card-body">
+              <img src="static/images/arduino.jpeg" width="180" class="rounded">
+            </div>  
+          </div> 
+		    </div>  
+		  </div>  
+		  
+		  <hr class="bg-secondary mt-3">
+		  
+		  <p class="mt-2">Documentation API</p>
+          
+	    <div id="arduino-api" class="card border border-secondary mt-3">
+	      <h5 class="card-header border-bottom border-secondary">API</h5>
+	      <div class="card-body">
+	        <ul class="list-group">
+	          <li class="list-group-item bg-light mb-2 border border-secondary">
+	            <h5>{{ url_for("status",_external=True) }}</h5>
+	            <ul data-url="{{ url_for('status',_external=True) }}" class="list-group">
+	              <li class="list-group-item">
+	                <button type="button" data-method="get" class="btn btn-secondary btn-sm">GET</button>
+	                <span class="badge badge-light">Get status</span>
+	                <div class="alert alert-info mt-2 mb-0" role="alert"></div>
+	              </li>
+	            </ul>    
+	          </li>
+	          <li class="list-group-item bg-light mb-2 border border-secondary">
+	            <h5>{{ url_for("reset",_external=True) }}</h5>
+	            <ul data-url="{{ url_for('reset',_external=True) }}" class="list-group">
+	              <li class="list-group-item">
+	                <button type="button" data-method="put" class="btn btn-secondary btn-sm">PUT</button>
+	                <span class="badge badge-light">Reset status</span>
+                  <div class="alert alert-info mt-2 mb-0" role="alert"></div>
+	              </li>
+	            </ul>    
+	          </li>
+	          <li class="list-group-item bg-light mb-2 border border-secondary">
+	            <h5>{{ url_for("led1",_external=True) }}</h5>
+	            <ul data-url="{{ url_for('led1',_external=True) }}" class="list-group">
+	              <li class="list-group-item mb-2">
+	                <button type="button" data-method="get" class="btn btn-secondary btn-sm">GET</button>
+	                <span class="badge badge-light">Get status LED1</span>
+                  <div class="alert alert-info mt-2 mb-0" role="alert"></div>
+	              </li>
+	              <li class="list-group-item">
+	                <button type="button" data-method="put" data-data="ON" class="btn btn-secondary btn-sm">PUT ON</button>
+	                <button type="button" data-method="put" data-data="OFF" class="btn btn-secondary btn-sm">PUT OFF</button>
+	                <button type="button" data-method="put" data-data="SWITCH" class="btn btn-secondary btn-sm">PUT SWITCH</button>
+	                <span class="badge badge-light">Set status LED1</span>
+                  <div class="alert alert-info mt-2 mb-0" role="alert"></div>
+	              </li>
+	            </ul>    
+	          </li>
+	          <li class="list-group-item bg-light mb-2 border border-secondary">
+	            <h5>{{ url_for("led2",_external=True) }}</h5>
+	            <ul data-url="{{ url_for('led2',_external=True) }}" class="list-group">
+	              <li class="list-group-item mb-2">
+	                <button type="button" data-method="get" class="btn btn-secondary btn-sm">GET</button>
+	                <span class="badge badge-light">Get status LED2</span>
+                  <div class="alert alert-info mt-2 mb-0" role="alert"></div>
+	              </li>
+	              <li class="list-group-item">
+	                <button type="button" data-method="put" data-data="ON" class="btn btn-secondary btn-sm">PUT ON</button>
+	                <button type="button" data-method="put" data-data="OFF" class="btn btn-secondary btn-sm">PUT OFF</button>
+	                <button type="button" data-method="put" data-data="SWITCH" class="btn btn-secondary btn-sm">PUT SWITCH</button>
+	                <span class="badge badge-light">Set status LED2</span>
+                  <div class="alert alert-info mt-2 mb-0" role="alert"></div>
+	              </li>
+	            </ul>    
+	          </li>
+	          <li class="list-group-item bg-light border border-secondary">
+	            <h5>{{ url_for("button",_external=True) }}</h5>
+	            <ul data-url="{{ url_for('button',_external=True) }}" class="list-group">
+	              <li class="list-group-item">
+	                <button type="button" data-method="get" class="btn btn-secondary btn-sm">GET</button>
+	                <span class="badge badge-light">Get status BUTTON</span>
+                  <div class="alert alert-info mt-2 mb-0" role="alert"></div>
+	              </li>
+	            </ul>    
+	          </li>
+	        </ul>
+	      </div>
+	    </div> 
+	    	    	
+		</div>  	
+			  
+	  
+    <!-- jQuery first, then Bootstrap JS -->
+    <script src="static/jquery-3.4.1.min.js"></script>
+    <script src="static/bootstrap-4.3.1/bootstrap.min.js"></script>
+    
+    <!-- Put in the action -->
+    <script>
+    $(function() {
+    	/* update status demo periodically */
+    	function check_status(loop) {
+        $.ajax({
+           url: '{{ url_for("status") }}',
+           success: function(data){
+        	   $("#demo_arduino").removeClass("btn-danger").addClass("btn-light");
+        	   set_status("demo_led1", data.led1);
+             set_status("demo_led2", data.led2);
+             set_status("demo_button", data.button);
+             if(loop) {
+               setTimeout(function(){check_status(true);}, 1000);
+             }
+           },
+           error: function(error){
+        	   $("#demo_arduino").removeClass("btn-light").addClass("btn-danger");               
+        	   $("#demo_led1 span.status").text("???");
+        	   $("#demo_led2 span.status").text("???");
+        	   $("#demo_button span.status").text("???");
+             if(loop) {
+               setTimeout(function(){check_status(true);}, 1000);
+             }
+           }
+         });            
+      }
+    	//change status in demo
+      function set_status(id, status) {
+    		$("#"+id+" span.status").text(status);
+        if(status=="ON") {
+          $("#"+id).removeClass("btn-danger").removeClass("btn-light").addClass("btn-warning");
+        } else if(status=="OFF") {
+          $("#"+id).removeClass("btn-danger").removeClass("btn-warning").addClass("btn-light");
+        } else {
+          $("#"+id).removeClass("btn-warning").removeClass("btn-light").addClass("btn-danger");
+        }  
+      }
+    	//start periodical check status      
+      check_status(true);
+    	
+      /* make buttons demo work */
+      $("#arduino-demo button").click(function() {
+    	  var oThis = $(this);
+        var url = oThis.data("url");
+        var requestMethod = oThis.data("method");
+        oThis.attr("disabled", true);
+        if((requestMethod=="get")||(requestMethod=="put")) {
+        	var requestData = JSON.stringify(oThis.data("data"));            
+        	$.ajax({
+            url: url,
+            type: requestMethod.toUpperCase(),
+            data: requestData,            
+            contentType: "application/json",            
+            success: function(data){
+            	$("#demo_arduino").removeClass("btn-danger").addClass("btn-light");
+              oThis.attr("disabled", false);
+            },
+            error: function(error){
+            	$("#demo_arduino").removeClass("btn-light").addClass("btn-danger");               
+              oThis.attr("disabled", false);
+            }
+          }); 	
+        }
+      });
+    	
+    	/* make buttons api work */
+    	$("#arduino-api div.alert").hide().html("");
+    	$("#arduino-api div.alert").click(function() {var oThis = $(this); oThis.hide().html("");})
+    	$("#arduino-api button").click(function() {
+    		var oThis = $(this);
+    		var url = oThis.closest("ul").data("url");
+    		var requestMethod = oThis.data("method");
+    		oThis.attr("disabled", true);
+    		$("#arduino-api div.alert").hide().html("");
+        var div = oThis.closest("li").find("div.alert").show();
+        if((requestMethod=="get")||(requestMethod=="put")) {
+        	var requestData = JSON.stringify(oThis.data("data"));   
+        	$.ajax({
+            url: url,
+            type: requestMethod.toUpperCase(),
+            data: requestData,            
+            contentType: "application/json",            
+            success: function(data){
+            	div.text(JSON.stringify(data));
+            	oThis.attr("disabled", false);
+            },
+            error: function(error){
+            	div.text(JSON.stringify(error));
+            	oThis.attr("disabled", false);
+            }
+          });   			
+    		} else {
+    			oThis.attr("disabled", false);
+    			div.text("unknown command");
+    		}        
+    	})
+    });
+    </script>    
+    
+  </body>
+</html>
