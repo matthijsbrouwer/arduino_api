@@ -36,19 +36,19 @@ the processing of the automatic program.
 A Python application communicates with the Arduino over the serial port based on the implemented protocol. 
 This Python application does also provide a webserver that can be accessed over a network (although exposing this service directly to the full internet is strongly discouraged) using a browser.
 
-## Server
+## Python application
 
-Start the [server](server/server.py) with
+Start the Python based [server](server/server.py) with
 
 ```
 python server/server.py
 ```
 
-The server tries to detect automatically the COM-port used by the Arduino board and starts a connection.
+The application tries to detect automatically the COM-port used by the Arduino board and starts a connection.
 
 Then two processes are started:
 
-<img align="right" src="../master/images/api.png?raw=true">
+<img width="200" align="right" src="../master/images/api.png?raw=true">
 
 - A process to monitor data sent from the board. This data is used to update the status of LED1, LED2 and BUTTON in variables also available to the other process. Also, on initialization, a timestamp is sent to the board, enabling synchronization of an automatically updated internal clock variable, and thereby for allowing the use of the current time in returning measurements and defining the automatic program (although this has not been implemented) 
 
@@ -61,11 +61,11 @@ The server also hosts an html/javascript based [demonstrator](http://localhost:5
 
 Using jQuery based javascript, the status of the board is periodically checked from the [REST API](http://localhost:5000/api/) with AJAX requests. This makes it possible to display the current status of leds, button and sensor.   
 
-<img src="../master/images/manual.png?raw=true">
+<img width="350" src="../master/images/manual.png?raw=true">
 
 The buttons LED1 and LED2 trigger the right functions to perform again AJAX calls to the API to change the status of the leds. The MEASUREMENT button let the board register the value measured on the incoming SENSOR1 port, and this value is reported back together with the time and status of leds and button.
 
-<img src="../master/images/measurements.png?raw=true">
+<img width="600" src="../master/images/measurements.png?raw=true">
 
 
 
