@@ -1,22 +1,33 @@
 # Control Arduino using API
 
-Demonstrate use of API to get and set status of Arduino board
-
 <img align="right" src="../master/images/arduino.jpeg?raw=true">
+
+Demonstrate use of an API to get and set status of an Arduino board and
+enable and adjust a program to also do this automatically.
 
 ## Setup Arduino
 
-Connect
+Connections:
 
-- LED1 to pin 12
-- LED2 to pin 13
-- BUTTON to pin 11
+- LED1 to pin 12 (Digital Out)
+- LED2 to pin 13 (Digital Out)
+- BUTTON1 to pin 11 (Digital In)
+- SENSOR1 to pin 0 (Analog In)
 
-Upload the [api software](arduino/api/api.ino) to the Arduino Board.
+In this test setup, the leds and button from an Arduino Shield were used for 
+LED1, LED2 and BUTTON1. 
 
-## Start server
+The SENSOR1 signal was simulated by using a potentiometer as 
+a voltage divider.
 
-Start the [server](server/server.py)
+The [api software](arduino/api/api.ino) was uploaded to the Arduino Board. This
+software listens to the serial port for incoming request from the Python application, processes
+received instructions, reports changes in status of the button, handles measurements with the sensor, 
+updates the internal clock and manages (if enabled) the processing of the automatic program. 
+
+## Server
+
+Start the [server](server/server.py) with
 
 ```
 python server/server.py
@@ -26,50 +37,24 @@ The server tries to detect automatically the COM-port used by the Arduino board 
 
 Then two processes are started:
 
-- A process to monitor data sent from the board. This data is used to update the status of LED1, LED2 and BUTTON in variables also available to the other process.
-- A process providing a Flask based API server to access these status variables and also send instructions to the board. 
+<img align="right" src="../master/images/api.png?raw=true">
 
-The server also hosts an html/javascript based demonstrator environment to test and 
-illustrate use of the API.
+- A process to monitor data sent from the board. This data is used to update the status of LED1, LED2 and BUTTON in variables also available to the other process. Also, on initialization, a timestamp is sent to the board, enabling synchronization of an automatically updated internal clock variable, and thereby for allowing the use of the current time in returning measurements and defining the automatic program (although this has not been implemented) 
 
-## Test API
+- A process running a Flask based providing an [REST API](http://localhost:5000/api/) to get and/or set status of leds and button, do measurements with the sensor and enable and adjust a program to do this automatically. 
+    
+The server also hosts an html/javascript based [demonstrator](http://localhost:5000/) to test and illustrate use of the [REST API](http://localhost:5000/api/).
 
-See [demonstrator](http://localhost:5000/)
 
-![Image](../master/images/browser.png?raw=true)
+## Demonstrator
 
-The buttons LED1 and LED2 can be used to control the leds. The browser displays the status of the leds, and also indicates if the button on the board is pushed down.
+Using jQuery based javascript, the status of the board is periodically checked from the [REST API](http://localhost:5000/api/) with AJAX requests. This makes it possible to display the current status of leds, button and sensor.   
 
-## Methods API
+<img src="../master/images/manual.png?raw=true">
 
-API methods available from this server
+The buttons LED1 and LED2 trigger the right functions to perform again AJAX calls to the API to change the status of the leds. The MEASUREMENT button let the board register the value measured on the incoming SENSOR1 port, and this value is reported back together with the time and status of leds and button.
 
-- GET status 
- 
-        curl 'http://localhost:5000/status' -X GET
-        
-- PUT reset
+<img src="../master/images/measurements.png?raw=true">
 
-        curl 'http://localhost:5000/reset' -X PUT        
-        
-- GET or PUT status LED1   
 
-        curl 'http://localhost:5000/led1' -X GET
-        curl 'http://localhost:5000/led1' -X PUT -H 'Content-Type: application/json'  --data '"ON"'
-        curl 'http://localhost:5000/led1' -X PUT -H 'Content-Type: application/json'  --data '"OFF"'
-        curl 'http://localhost:5000/led1' -X PUT -H 'Content-Type: application/json'  --data '"SWITCH"'
-        
-- GET or PUT status LED2   
 
-        curl 'http://localhost:5000/led2' -X GET
-        curl 'http://localhost:5000/led2' -X PUT -H 'Content-Type: application/json'  --data '"ON"'
-        curl 'http://localhost:5000/led2' -X PUT -H 'Content-Type: application/json'  --data '"OFF"'
-        curl 'http://localhost:5000/led2' -X PUT -H 'Content-Type: application/json'  --data '"SWITCH"'            
-
-- GET status BUTTON 
-
-        curl 'http://localhost:5000/button' -X GET
-        
-These methods can also be tested from the [demonstrator](http://localhost:5000/).        
-        
-        
