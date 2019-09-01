@@ -10,6 +10,10 @@ Demonstrate the use of an API to
 
 ## Arduino
 
+An [Arduino Board](https://www.arduino.cc/) is used to connect several components. In this demonstrator 
+setup, the leds and button from an Arduino Shield are used as LED1, LED2 and BUTTON1, and 
+the SENSOR1 signal is simulated by using a potentiometer as a voltage divider.
+
 Connections:
 
 - LED1 to pin 12 (Digital Out)
@@ -17,15 +21,13 @@ Connections:
 - BUTTON1 to pin 11 (Digital In)
 - SENSOR1 to pin 0 (Analog In)
 
-In this test setup, the leds and button from an Arduino Shield are used for 
-LED1, LED2 and BUTTON1, and the SENSOR1 signal is simulated by using a potentiometer as 
-a voltage divider.
-
-The [api software](arduino/api/api.ino) has to be uploaded to the Arduino Board. 
-
-This software listens to the serial port for incoming request from the Python application, processes
-received instructions, reports changes in status of the button, handles measurements with the sensor, 
-updates the internal clock and manages (if enabled) the processing of the automatic program. 
+The [api software](arduino/api/api.ino), based on this setup, has to be uploaded to the Arduino Board. 
+Adjusting the software to support other or more components should not be too difficult, but will 
+probably very project specific.
+ 
+The uploaded software lets the Arduino listen to the serial port for incoming request from the Python application, processes received instructions, reports changes in status of the button, 
+handles measurements with the sensor, updates the internal clock and manages (if enabled) 
+the processing of the automatic program. 
 
 <img src="../master/images/scheme.jpeg?raw=true">
 
