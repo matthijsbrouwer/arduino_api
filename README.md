@@ -24,12 +24,17 @@ Connections:
 The [api software](arduino/api/api.ino), based on this setup, has to be uploaded to the Arduino Board. 
 Adjusting the software to support other or more components should not be too difficult, but will 
 probably very project specific.
+
+## Architecture
  
 The uploaded software lets the Arduino listen to the serial port for incoming request from the Python application, processes received instructions, reports changes in status of the button, 
 handles measurements with the sensor, updates the internal clock and manages (if enabled) 
 the processing of the automatic program. 
 
 <img src="../master/images/scheme.jpeg?raw=true">
+
+A Python application communicates with the Arduino over the serial port based on the implemented protocol. 
+This Python application does also provide a webserver that can be accessed over a network (although exposing this service directly to the full internet is strongly discouraged) using a browser.
 
 ## Server
 
