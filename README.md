@@ -53,19 +53,34 @@ Then two processes are started:
 - A process to monitor data sent from the board. This data is used to update the status of LED1, LED2 and BUTTON in variables also available to the other process. Also, on initialization, a timestamp is sent to the board, enabling synchronization of an automatically updated internal clock variable, and thereby for allowing the use of the current time in returning measurements and defining the automatic program (although this has not been implemented) 
 
 - A process running a Flask based providing an [REST API](http://localhost:5000/api/) to get and/or set status of leds and button, do measurements with the sensor and enable and adjust a program to do this automatically. 
-    
-The server also hosts an html/javascript based [demonstrator](http://localhost:5000/) to test and illustrate use of the [REST API](http://localhost:5000/api/).
 
 
 ## Demonstrator
 
-Using jQuery based javascript, the status of the board is periodically checked from the [REST API](http://localhost:5000/api/) with AJAX requests. This makes it possible to display the current status of leds, button and sensor.   
+The Flask based server also hosts an html/javascript based [demonstrator](http://localhost:5000/) to test and illustrate use of the [REST API](http://localhost:5000/api/). Using jQuery based javascript, the status of the board is periodically checked from the [REST API](http://localhost:5000/api/) with AJAX requests. This makes it possible to display the current status of leds, button and sensor.   
 
 <img width="350" src="../master/images/manual.png?raw=true">
 
-The buttons LED1 and LED2 trigger the right functions to perform again AJAX calls to the API to change the status of the leds. The MEASUREMENT button let the board register the value measured on the incoming SENSOR1 port, and this value is reported back together with the time and status of leds and button.
+The buttons LED1 and LED2 trigger functions to perform again AJAX calls to the API to change the status of the leds. The MEASUREMENT button lets the board register the value measured on the incoming SENSOR1 port, and this value is reported back together with the time and status of leds and button. Measurements
+are automatically displayed in the browser.
 
 <img width="600" src="../master/images/measurements.png?raw=true">
+
+By using the MODUS button, the operation of the Arduino can be changed from MANUAL to AUTOMATIC. When the automatic program is enabled, the board does periodically enables and disables the leds and performs 
+measurements based on configured parameters. 
+
+<img width="350" src="../master/images/automatic.png?raw=true">
+
+The configured parameters for this program can be adjusted using the API.
+
+<img width="350" src="../master/images/program.png?raw=true">
+
+## Storage
+
+TODO
+
+
+
 
 
 
