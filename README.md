@@ -2,7 +2,7 @@
 
 <img align="right" src="../master/images/arduino.jpeg?raw=true">
 
-Demonstrate the use of an API to
+Demonstrate implementation and use of an API to
 
 - Get and set status of components connected to an Arduino board
 - Perform measurements with a sensor connected to the board
