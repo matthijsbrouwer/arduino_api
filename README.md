@@ -2,10 +2,13 @@
 
 <img align="right" src="../master/images/arduino.jpeg?raw=true">
 
-Demonstrate use of an API to get and set status of an Arduino board and
-enable and adjust a program to also do this automatically.
+Demonstrate the use of an API to
 
-## Setup Arduino
+- Get and set status of components connected to an Arduino board
+- Perform measurements with a sensor connected to the board
+- Enable and adjust a program on the board to also do this automatically
+
+## Arduino
 
 Connections:
 
@@ -14,16 +17,17 @@ Connections:
 - BUTTON1 to pin 11 (Digital In)
 - SENSOR1 to pin 0 (Analog In)
 
-In this test setup, the leds and button from an Arduino Shield were used for 
-LED1, LED2 and BUTTON1. 
-
-The SENSOR1 signal was simulated by using a potentiometer as 
+In this test setup, the leds and button from an Arduino Shield are used for 
+LED1, LED2 and BUTTON1, and the SENSOR1 signal is simulated by using a potentiometer as 
 a voltage divider.
 
-The [api software](arduino/api/api.ino) was uploaded to the Arduino Board. This
-software listens to the serial port for incoming request from the Python application, processes
+The [api software](arduino/api/api.ino) has to be uploaded to the Arduino Board. 
+
+This software listens to the serial port for incoming request from the Python application, processes
 received instructions, reports changes in status of the button, handles measurements with the sensor, 
 updates the internal clock and manages (if enabled) the processing of the automatic program. 
+
+<img src="../master/images/scheme.jpeg?raw=true">
 
 ## Server
 
