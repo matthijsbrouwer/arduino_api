@@ -54,8 +54,7 @@ Then two processes are started:
 - A process to monitor data sent from the board. This data contains the current status of LED1, LED2 
 and BUTTON1, and is stored in variables also available to the other process. Also, on initialization, a timestamp is sent to the board, enabling synchronization of an automatically updated internal clock variable on the board, and thereby for allowing the use of the current time in returning measurements and defining the automatic program (although this has not been implemented yet) 
 
-- A process running a Flask based providing an [REST API](http://localhost:5000/api/) to get and/or set status of leds and button, do measurements with the sensor and enable and adjust a program to do this automatically. 
-
+- A process running a Flask based providing an [REST API](http://localhost:5000/api/) to get and/or set status of leds and button, do measurements with the sensor and enable and adjust a program to do this automatically. By default the webserver is available on port 5000 of the localhost.
 
 ## Demonstrator
 
