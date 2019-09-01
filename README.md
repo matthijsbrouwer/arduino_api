@@ -21,7 +21,7 @@ Connections used on the board:
 - BUTTON1 to pin 11 (Digital In)
 - SENSOR1 to pin 0 (Analog In)
 
-The [api software](arduino/api/api.ino), based on this setup, has to be uploaded to the Arduino board. 
+The [api software](arduino/api/api.ino), based on this setup, has to be uploaded to the board. 
 Adjusting the software to support other or more components should not be too difficult, but 
 detailed specifications are probably project specific. This implementation only aims at illustrating
 what is possible.
@@ -78,12 +78,14 @@ measurements based on configured parameters.
 The necessary operations will often be very project specific. For this demonstrator a program is implemented containing one or multiple cycles with a configurable period, configurable start/stop times within this cycle for both leds, and configurable measurement time within the cycle. 
 Furthermore the number of cycles is configurable, and the optional delay after these cycles. 
 
-
-
+<img width="600" src="../master/images/timeline.jpeg?raw=true">
 
 Once all cycles and the delay have been finished, the program starts again from the beginning. The configured parameters for this program can be adjusted, again based on API calls.
 
 <img width="350" src="../master/images/program.png?raw=true">
+
+As stated before, project specific implementations of such programs are probably not too difficult
+to implement.
 
 ## Storage
 
