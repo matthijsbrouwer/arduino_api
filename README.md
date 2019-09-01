@@ -10,20 +10,21 @@ Demonstrate the use of an API to
 
 ## Arduino
 
-An [Arduino Board](https://www.arduino.cc/) is used to connect several components. In this demonstrator 
+An [Arduino board](https://www.arduino.cc/) is used to connect several components. In this demonstrator 
 setup, the leds and button from an Arduino Shield are used as LED1, LED2 and BUTTON1, and 
 the SENSOR1 signal is simulated by using a potentiometer as a voltage divider.
 
-Connections:
+Connections used on the board:
 
 - LED1 to pin 12 (Digital Out)
 - LED2 to pin 13 (Digital Out)
 - BUTTON1 to pin 11 (Digital In)
 - SENSOR1 to pin 0 (Analog In)
 
-The [api software](arduino/api/api.ino), based on this setup, has to be uploaded to the Arduino Board. 
-Adjusting the software to support other or more components should not be too difficult, but will 
-probably very project specific.
+The [api software](arduino/api/api.ino), based on this setup, has to be uploaded to the Arduino board. 
+Adjusting the software to support other or more components should not be too difficult, but 
+detailed specifications are probably project specific. This implementation only aims at illustrating
+what is possible.
 
 ## Architecture
  
@@ -50,28 +51,37 @@ Then two processes are started:
 
 <img width="200" align="right" src="../master/images/api.png?raw=true">
 
-- A process to monitor data sent from the board. This data is used to update the status of LED1, LED2 and BUTTON in variables also available to the other process. Also, on initialization, a timestamp is sent to the board, enabling synchronization of an automatically updated internal clock variable, and thereby for allowing the use of the current time in returning measurements and defining the automatic program (although this has not been implemented) 
+- A process to monitor data sent from the board. This data contains the current status of LED1, LED2 
+and BUTTON1, and is stored in variables also available to the other process. Also, on initialization, a timestamp is sent to the board, enabling synchronization of an automatically updated internal clock variable on the board, and thereby for allowing the use of the current time in returning measurements and defining the automatic program (although this has not been implemented yet) 
 
 - A process running a Flask based providing an [REST API](http://localhost:5000/api/) to get and/or set status of leds and button, do measurements with the sensor and enable and adjust a program to do this automatically. 
 
 
 ## Demonstrator
 
-The Flask based server also hosts an html/javascript based [demonstrator](http://localhost:5000/) to test and illustrate use of the [REST API](http://localhost:5000/api/). Using jQuery based javascript, the status of the board is periodically checked from the [REST API](http://localhost:5000/api/) with AJAX requests. This makes it possible to display the current status of leds, button and sensor.   
+The Flask based server also hosts an html/javascript based [demonstrator](http://localhost:5000/) to test and illustrate use of the [REST API](http://localhost:5000/api/). Using jQuery based javascript, the status of the board is periodically checked by calling the [REST API](http://localhost:5000/api/) with AJAX requests. This allows the demonstrator to update and display the current status of leds, button and sensor
+to the user.   
 
 <img width="350" src="../master/images/manual.png?raw=true">
 
-The buttons LED1 and LED2 trigger functions to perform again AJAX calls to the API to change the status of the leds. The MEASUREMENT button lets the board register the value measured on the incoming SENSOR1 port, and this value is reported back together with the time and status of leds and button. Measurements
-are automatically displayed in the browser.
+The buttons LED1 and LED2 trigger functions to perform again AJAX calls to the API, resulting in a change of status for the leds. The MEASUREMENT button lets the board register the value measured on the incoming SENSOR1 port, and this value is reported back together with the time and status of leds and button. These measurements are displayed in the browser.
 
 <img width="600" src="../master/images/measurements.png?raw=true">
 
-By using the MODUS button, the operation of the Arduino can be changed from MANUAL to AUTOMATIC. When the automatic program is enabled, the board does periodically enables and disables the leds and performs 
+## Automatically
+
+By using the MODUS button, the operation of the Arduino can be changed from MANUAL to AUTOMATIC. When the automatic program is enabled, the board periodically enables and disables the leds and performs 
 measurements based on configured parameters. 
 
 <img width="350" src="../master/images/automatic.png?raw=true">
 
-The configured parameters for this program can be adjusted using the API.
+The necessary operations will often be very project specific. For this demonstrator a program is implemented containing one or multiple cycles with a configurable period, configurable start/stop times within this cycle for both leds, and configurable measurement time within the cycle. 
+Furthermore the number of cycles is configurable, and the optional delay after these cycles. 
+
+
+
+
+Once all cycles and the delay have been finished, the program starts again from the beginning. The configured parameters for this program can be adjusted, again based on API calls.
 
 <img width="350" src="../master/images/program.png?raw=true">
 
