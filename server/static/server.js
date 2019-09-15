@@ -18,6 +18,7 @@ $(function() {
 				set_sensor("demo_sensor1", "sensor1", data.measurements.last);
 				$("button.demo_manual").prop("disabled", (data.modus == "AUTOMATIC"));				
 				set_measurement(data.measurements);
+				set_storage(data.storage);
 				set_program(data.program);
 				if (loop) {
 					setTimeout(function() {
@@ -128,6 +129,26 @@ $(function() {
 			updateProgram();
 		}	
 	}
+	
+	//change storage
+	function set_storage(storage) {
+		if(storage_last!=storage.last) {
+			storage_last = storage.last;
+			storage_automatic = storage.automatic;
+			storage_manual = storage.manual;
+			storage_automatic_interval = storage.automatic_interval;
+			storage_file = Boolean(storage.file);
+			storage_file_name = storage.file_name;
+			storage_elabjournal = storage.elabjournal;
+			storage_elabjournal_experiment_id = storage.elabjournal_experiment_id;
+			storage_elabjournal_experiment_name = storage.elabjournal_experiment_name;
+			storage_elabjournal_section_new = storage.elabjournal_section_new;
+			storage_elabjournal_section_id = storage.elabjournal_section_id;
+			storage_elabjournal_section_name = storage.elabjournal_section_name;
+			storage_elabjournal_section_sheet = storage.elabjournal_section_sheet;
+			updateStorage();
+		}	
+	}
 	//start periodical check status  
 	$("#demo_measurement table").hide();
 	check_status($("body").data("url-status"), true);
@@ -160,6 +181,20 @@ $(function() {
 				}
 			});
 
+	var storage_changed = false;
+	var storage_last = 0;
+	var storage_automatic = false;
+	var storage_manual = false;
+	var storage_automatic_interval = 0;	
+	var storage_file = false;
+	var storage_file_name = "";
+	var storage_elabjournal = false;
+	var storage_elabjournal_experiment_id = 0;
+	var storage_elabjournal_experiment_name = "";
+	var storage_elabjournal_section_new = false;
+	var storage_elabjournal_section_id = 0;
+	var storage_elabjournal_section_name = "";
+	var storage_elabjournal_section_sheet = "";
 	var program_changed = false;
 	var program_last = 0;
 	var program_led1 = false;
@@ -171,6 +206,7 @@ $(function() {
 	var program_delay = 0;
 	var program_repeats = 0;	
 	
+	initStorage();
 	initProgram();
 	
 	$("#program_reset").click(function() {
@@ -258,7 +294,7 @@ $(function() {
 	
 	function initProgram() {
 		
-		$("button.demo_program").prop("disabled",true);
+		$("button.demo_storage").prop("disabled",true);
 		function updateValue(ui, postfix) {
 			$(ui.handle).attr("data-index", $(ui.handle).index());
 			$(ui.handle).attr("data-value", ui.value);
@@ -334,6 +370,152 @@ $(function() {
 	    }
 		
 	}
+	
+	$("#storage_reset").click(function() {
+		if(storage_changed) {
+			storage_changed = false;
+			$("button.demo_storage").prop("disabled",true);
+			updateStorage();
+		}	
+	});
+	
+	$("#storage_save").click(function() {
+		var oThis = $(this);
+		if(storage_changed) {
+			var url = oThis.data("url");
+			var requestMethod = oThis.data("method");
+			var requestData = {
+					automatic: $("#storage_automatic").prop("checked"),
+					automatic_interval: $("#storage_automatic_interval .ui-slider-handle").attr("data-value"),
+					file: $("#storage_file").prop("checked"),
+					elabjournal: $("#storage_elabjournal").prop("checked"),
+					elabjournal_experiment_id: $("#storage_elabjournal_experiment_id").val(),
+					elabjournal_section_new: $("#storage_elabjournal_section_new").prop("checked")
+			};
+			$.ajax({
+				url : url,
+				type : requestMethod.toUpperCase(),
+				data : requestData,
+				success : function(data) {
+					console.log(data);
+				},
+				error : function(error) {
+					console.log("ERROR");
+				}
+			});
+			storage_changed = false;
+			$("button.demo_storage").prop("disabled",true);			
+		}		
+	});
+	
+	$("#storage_manual").click(function() {		
+		var oThis = $(this);
+		var url = oThis.data("url");
+		oThis.hide();
+		var requestData = JSON.stringify(oThis.data("data"));
+		$.ajax({
+			url : url,
+			type : "PUT",
+			success : function(data) {					
+			},
+			error : function(error) {					
+			}
+		});			
+	});
+
+	function editStorage() {
+		storage_changed = true;	
+		$("button.demo_storage").prop("disabled",false);		
+	}
+	
+	function initStorage() {
+		
+		$("button.demo_program").prop("disabled",true);
+		function updateValue(ui, postfix) {
+			$(ui.handle).attr("data-index", $(ui.handle).index());
+			$(ui.handle).attr("data-value", ui.value);
+		    $(ui.handle).attr("data-label", ui.value+postfix);
+		}		
+		$("#storage_automatic,#storage_file,#storage_elabjournal").change(function() {
+			editStorage();
+		});
+		storage_number("storage_automatic_interval",storage_automatic_interval,0,60000,100," ms");
+		$("#storage_file_name").val(storage_file_name);
+		$("#storage_elabjournal_experiment_id").mousedown(function(){
+    		editStorage();
+    		$("#storage_elabjournal").prop("checked",true);
+    	}).val(storage_elabjournal_experiment_id);
+		$("#storage_elabjournal_experiment_name").val(storage_elabjournal_experiment_name);		
+		$("#storage_elabjournal_section_new").prop("checked",storage_elabjournal_section_new);	
+		$("#storage_elabjournal_section_id").val(storage_elabjournal_section_id);		
+		$("#storage_elabjournal_section_name").val(storage_elabjournal_section_name);		
+		$("#storage_elabjournal_section_sheet").val(storage_elabjournal_section_sheet);		
+		$("#storage_automatic").prop("checked",storage_automatic);
+		$("#storage_file").prop("checked",storage_file);
+		$("#storage_elabjournal").prop("checked",storage_elabjournal);
+		function storage_number(id,value,min,max,step,postfix) {
+	    	$("#"+id).mousedown(function(){
+	    		editStorage();
+	    		$(this).parent("div").find("input[type=checkbox]").prop("checked",true);
+	    	}).slider({
+	    		min : min,
+	    		max : max,
+	    		step: step,
+	    		value: value,
+	    		create: function (event, ui) {
+	    	        $.each([value], function(i, v){
+	    	            updateValue({
+	    	                value: v,
+	    	                handle: $("#"+id+" .ui-slider-handle").eq(i) 
+	    	            }, postfix);
+	    	        });
+	    	    },
+	    	    slide: function (event, ui) {
+	    	    	updateValue(ui,postfix);
+	    	    }
+	    	});
+	    }
+		
+	}
+    
+    function updateStorage() {
+		if(!storage_changed) {
+			function updateValue(ui, postfix) {
+				$(ui.handle).attr("data-value", ui.value);
+			    $(ui.handle).attr("data-label", ui.value+postfix);
+			}
+			update_number("storage_automatic_interval",storage_automatic_interval,60000," ms");
+			$("#storage_automatic").prop("checked",storage_automatic);
+			$("#storage_file").prop("checked",storage_file);
+			$("#storage_file_name").val(storage_file_name);
+			$("#storage_elabjournal").prop("checked",storage_elabjournal);
+			$("#storage_elabjournal_experiment_id").val(storage_elabjournal_experiment_id);
+			$("#storage_elabjournal_experiment_name").val(storage_elabjournal_experiment_name);
+			$("#storage_elabjournal_section_new").prop("checked",storage_elabjournal_section_new);
+			$("#storage_elabjournal_section_id").val(storage_elabjournal_section_id);
+			$("#storage_elabjournal_section_name").val(storage_elabjournal_section_name);
+			$("#storage_elabjournal_section_sheet").val(storage_elabjournal_section_sheet);
+			if(storage_manual) {
+				$("#storage_manual").hide();
+			} else {
+				if(storage_elabjournal || storage_file) {
+				    $("#storage_manual").show();
+				} else {
+					$("#storage_manual").hide();
+				}    
+			}
+			function update_number(id,value,max,postfix) {
+				$("#"+id).slider("option", "max", max);
+				$("#"+id).slider("option", "value", value);
+				updateValue({
+		            value: value,
+		            handle: $("#"+id+" .ui-slider-handle")
+		        },postfix);					
+			}		
+		}	
+    }
+	
+	
 	
 	
     

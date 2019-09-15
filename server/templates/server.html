@@ -68,8 +68,9 @@
 	              <div class="m-0 p-0 table-responsive collapse" id="collapseMeasurements" aria-labelledby="headingMeasurements" data-parent="#accordion"> 
 	                <div class="ml-2 p-2">
 		                <button data-url="{{ url_for('api.measurement_measurement_clear',_external=True) }}" data-method="put" type="button" class="default_button btn btn-secondary">CLEAR</button>
-		              </div>
-	                <table class="table table-bordered m-0">
+		                <button id="storage_manual" data-url="{{ url_for('api.storage_storage_manual',_external=True) }}" data-method="put" type="button" class="btn btn-secondary">STORAGE</button>
+                  </div>
+                  <table class="table table-bordered m-0">
 									  <thead class="thead-light">
 									    <tr>
 									      <th scope="col">ID</th>
@@ -91,7 +92,61 @@
                   <h5 class="card-title">Storage measurements</h5>  
                 </div>  
                 <div class="ml-2 p-2 collapse" id="collapseStorage" aria-labelledby="headingStorage" data-parent="#accordion">                             
-                  STORAGE settings
+                  <div class="p-2">
+                    <button id="storage_save" data-url="{{ url_for('api.storage_storage',_external=True) }}" data-method="put" type="button" class="demo_storage btn btn-secondary">SAVE</button>
+                    <button id="storage_reset" type="button" class="demo_storage btn btn-secondary">RESET</button>
+                  </div>
+                  <div class="mb-2 p-2 border border-secondary">
+                    <input type="checkbox" name="storage_automatic" id="storage_automatic">
+                    <label for="storage_automatic" class="mb-4">AUTOMATIC:</label>                  
+                    <div id="storage_automatic_interval" class="mt-3"></div>
+                  </div>
+                  <div class="mb-2 p-2 border border-secondary">
+                    <input type="checkbox" name="storage_file" id="storage_file">
+                    <label for="storage_file" class="mb-4">Store on filesystem</label> 
+                    <div class="form-group row">
+                      <label for="storage_file_name" class="col-sm-2 col-form-label">Filename</label>
+                      <div class="col-sm-10">
+                        <input type="text" class="form-control" id="storage_file_name" value="" readonly>
+                      </div>
+                    </div>                                     
+                  </div>
+                  <div class="mb-2 p-2 border border-secondary">
+                    <input type="checkbox" name="storage_elabjournal" id="storage_elabjournal">
+                    <label for="storage_elabjournal" class="mb-4">Store in eLABJournal</label>  
+                    <div class="form-group row">
+									    <label for="storage_elabjournal_experiment_id" class="col-sm-2 col-form-label">ExperimentID</label>
+									    <div class="col-sm-10">
+									      <input type="number" class="form-control" id="storage_elabjournal_experiment_id" name="storage_elabjournal_experiment_id" value="">
+									    </div>
+									  </div>
+									  <div class="form-group row">
+									    <label for="storage_elabjournal_experiment_name" class="col-sm-2 col-form-label">Name</label>
+									    <div class="col-sm-10">
+									      <input type="text" class="form-control" id="storage_elabjournal_experiment_name" name="storage_elabjournal_experiment_name" value="" readonly>
+									    </div>
+									  </div>
+									  <input type="checkbox" name="storage_elabjournal_section_new" id="storage_elabjournal_section_new">
+                    <label for="storage_elabjournal_section_new" class="mb-4">Always create new section in eLABJournal experiment</label>                      
+									  <div class="form-group row">
+                      <label for="storage_elabjournal_section_id" class="col-sm-2 col-form-label">SectionID</label>
+                      <div class="col-sm-10">
+                        <input type="number" class="form-control" id="storage_elabjournal_section_id" name="storage_elabjournal_section_id" value="" readonly>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label for="storage_elabjournal_section_name" class="col-sm-2 col-form-label">Name</label>
+                      <div class="col-sm-10">
+                        <input type="text" class="form-control" id="storage_elabjournal_section_name" value="" readonly>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label for="storage_elabjournal_section_sheet" class="col-sm-2 col-form-label">Sheet</label>
+                      <div class="col-sm-10">
+                        <input type="text" class="form-control" id="storage_elabjournal_section_sheet" value="" readonly>
+                      </div>
+                    </div>                                    
+                  </div>
                 </div>
               </div>  
 							<div class="card">
