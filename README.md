@@ -130,7 +130,7 @@ id,timestamp,date,time,modus,led1,led2,button1,sensor1
 5,1568530381,2019-09-15,08:53:01,AUTOMATIC,ON,ON,DOWN,0.43
 ```
 
-And in the configured eLABJournal experiment, a new section of type *EXCEL* has appeared, and data
+And in the configured eLABJournal experiment, a new section of type *EXCEL* has appeared. Data
 is appended to the sheet `2019-09-15 08.52.02`.
 
 <img width="350" src="../master/images/storage_elabjournal.png?raw=true"> 
